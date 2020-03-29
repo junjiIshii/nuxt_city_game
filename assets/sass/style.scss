@@ -1,3 +1,11 @@
-h1{
-    color:red;
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
+$black:#222222;
+$white:#fff;
+@import './common.scss';
+@import './geo.scss';
+@import './city.scss';
+

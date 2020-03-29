@@ -1,0 +1,41 @@
+.l-geo_conteiner{
+    width: 100%;
+    overflow: scroll;
+    border: 1px black solid;
+    // position: relative;
+    padding: 10px;
+    max-width: 500px;
+    margin: 0 auto;
+
+}
+
+.l-geo_conteiner__wrapper{
+    // position: absolute;
+    // top: 25%;
+    // left: 25%;
+    border-right: 1px blue solid;
+    border-bottom: 1px blue solid;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.c-geo_cell{
+    border-top: 1px blue solid;
+    border-left: 1px blue solid;
+
+    &.u-plane{
+        background-color: chartreuse;
+    }
+
+    &.u-sea{
+        background-color: mediumturquoise;
+    }
+
+    &.u-hascity{
+        background: red;
+    }
+
+    &:hover{
+        opacity: 0.8;
+    }
+}

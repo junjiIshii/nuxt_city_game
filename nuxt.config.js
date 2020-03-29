@@ -4,6 +4,7 @@ export default {
   /*
   ** Headers of the page
   */
+
   head: {
     title: process.env.npm_package_name || '',
     meta: [
@@ -12,7 +13,11 @@ export default {
       { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'stylesheet',href:'https://use.fontawesome.com/releases/v5.6.1/css/all.css' }
+    ],
+    script: [
+      { src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js' }
     ]
   },
   /*

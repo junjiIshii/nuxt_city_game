@@ -1,0 +1,88 @@
+//Game Header
+.l-game-header{
+    width: 100%;
+    margin-bottom:20px;
+    background-color: aquamarine;
+}
+
+.p-game-heder__icon-conteiner{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+
+    & .is-selected_action{
+        background-color: rgba(0,0,0,0.5);
+    }
+}
+
+.u-geo-opning .u-header_city{
+    display: none
+}
+
+.u-city-opning .u-header_geo{
+    display: none
+}
+
+.game-heder__icon{
+    position: relative;
+    padding: 10px;
+    font-size:2.5rem;
+}
+
+.game-heder__icon-guide{
+    display: none;
+    width: 150px;
+    position: absolute;
+    font-size: 1.0rem;
+    top: 60px;
+    padding: 5px;
+    left: -45px;
+    background-color: rgba(0,0,0,0.5);
+    color: white;
+}
+.game-heder__icon:hover .game-heder__icon-guide{
+    display: unset;
+}
+
+.game-heder__icon-guide::before{
+    position: absolute;
+    top: -10px;
+    right: 45%;
+    content: "";
+    width: 0;
+    height: 0;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid rgba(0,0,0,0.5);
+    border-left: 10px solid transparent; 
+}
+
+//inputmordal
+.p-mordal__conteiner{
+    position: absolute;
+    top: 0;
+    left:0;
+    padding: 45px;
+    background-color: rgba(0,0,0,0.5);
+    width: 100%;height: 100%;
+    z-index: 2;
+}
+
+//Slider
+.p-rich-slider {
+    display: inline-block;
+    position: relative;
+    min-width: 180px;
+}
+
+.p-rich-slider .c-rich-slider__slide{
+    margin: 0 5px;
+}
+.p-rich-slider .c-slider-btn{
+    cursor: pointer;
+    font-size: 1.3rem;
+}
+
+.p-rich-slider .c-error-mes{
+    position: absolute;
+}
