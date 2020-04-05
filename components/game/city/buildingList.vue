@@ -24,7 +24,15 @@
                         />
                     </div>
                     <div class="c-bulding-data__unit__record" v-if="isHasPropaty('prodPerWorker')">
-                        生産総量：<span><i class="u-has-icon" :class="buildInstance.prodItemIcon"></i>{{buildInstance.prodPerWorker*buildInstance.workerNum}}</span>
+                        生産総量：<span v-for="(cls,index) in buildInstance.prodItemIcon" :key="index"><i class="u-has-icon" :class="cls"></i>{{buildInstance.prodPerWorker*buildInstance.workerNum}}</span>
+                    </div>
+                    <div class="c-bulding-data__unit__record" v-if="isHasPropaty('sizeLevel')">
+                        規模レベル：<span>Lv.{{buildInstance.sizeLevel}}</span>
+                        <useBtn v-bind:actionName="'レベルUP'" v-bind:useItems="buildInstance.sizeLvCost" v-bind:clickMethod="levelUp"/>
+                    </div>
+                    <div class="c-bulding-data__unit__record" v-if="isHasPropaty('effiLevel')">
+                        効率レベル：<span>Lv.{{buildInstance.effiLevel}}</span>
+                        <useBtn v-bind:actionName="'レベルUP'" v-bind:useItems="buildInstance.effiLvCost" v-bind:clickMethod="levelUp"/>
                     </div>
                 </div>
             </div>
@@ -33,6 +41,8 @@
 
 <script>
 import slider from '../common/slider';
+import useBtn from '../common/resourceUseBtn';
+
 export default {
     name:'bldLists',
     props:['buildInstance','openMethods'],
@@ -60,8 +70,11 @@ export default {
             let cityObj = this.$store.getters['city/getCityObject'](cityID);
             let err = this.buildInstance.changeWorkerNum(val,cityObj);
             (err)?this.$store.dispatch('message/setErrMessages',err):'';
+        },
+        levelUp(){
+            console.log('levelUP!!')
         }
     },
-    components:{slider}
+    components:{slider,useBtn}
 }
 </script>

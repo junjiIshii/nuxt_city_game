@@ -31,6 +31,10 @@ export const state = () =>({
                 jmes:'人口の上限を超えています。',
                 emes:'Select the place to buid your City!'
             },
+            {id:5,
+                jmes:'必要な資源がたりません。',
+                emes:'Needed resource is short.'
+            }
         ],
         template:[
             {id:0,

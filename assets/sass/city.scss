@@ -78,6 +78,17 @@ $cityConteiner_pad:10px;
     }
 }
 
+//building record rows
+.p-city_mainController{
+    .c-bulding-data__unit__record{
+        padding: 2px 0px;
+
+        &:first-child{padding: 0px 0px 2px 0px}
+        &:last-child{padding: 2px 0px 0px 0px}
+
+    }
+}
+
 //sub controller
 .p-resource-info{
     border: 1px solid black;

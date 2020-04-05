@@ -43,8 +43,6 @@ export const mutations ={
     },
     proceedNextTurn(state){
         state.turn +=1;
-        // state.globalResource.anger.num = 5;
-        console.log(state.globalResource[2].getNum())
     }
 };
 
@@ -58,7 +56,7 @@ export const getters ={
     getSelectedCityID(state){
         return state.selectedCityID
     },
-    getGlobaResource(state){
+    getGlobalResource(state){
         return state.globalResource
     },
     getisFirstCityBuild(state){
@@ -97,6 +95,6 @@ export const actions ={
     },
     goNextTurn({commit}){
         commit('proceedNextTurn');
-        commit('city/turnConsume',null,{root:true})
+        commit('city/turnCityActivity',null,{root:true})
     }
 };

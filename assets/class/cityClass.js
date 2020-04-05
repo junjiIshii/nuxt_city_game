@@ -1,3 +1,4 @@
+import {Resource,globalResource} from './basicResource';
 export default class City{
     constructor(id,name,geoID,buildings,localResource){
         this.id = id;
@@ -38,5 +39,34 @@ export default class City{
         let frees = peopleNum - allWorkers;
         
         foodStore[0].foodConsume(result+frees);
+    }
+
+    productItems(){
+        this.buildings.forEach(obj=>{
+            if('workerNum' in obj){
+                let worker = obj.workerNum;
+                let raito = obj.prodPerWorker;
+                let prodsNum = worker * raito;
+                let productItems = obj.prodItemID;
+
+                productItems.forEach(item=>{
+                    let isGlobal = Resource.isGlobalResource(item);
+    
+                    if(isGlobal){
+                        let targetResource =  globalResource.filter(data=>{
+                            return data.brID == item;
+                        });
+                        targetResource[0].productItem(prodsNum);
+                    }else{
+                        //LocalResource 
+                        let targetResource = this.localResource.filter(data=>{
+                            return data.brID == item;
+                        })
+                        targetResource[0].productItem(prodsNum);
+                    }
+                })
+                
+            }
+        })
     }
 }

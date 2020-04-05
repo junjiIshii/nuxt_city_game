@@ -24,10 +24,18 @@
                     1人あたりの食料消費：<span>{{oneBuilding.comsumeFood}}</span>
                 </div>
                 <div class="c-bulding-data__unit__record" v-if="isHasPropaty('prodPerWorker')">
-                    生産総量：<span><i class="u-has-icon" :class="oneBuilding.prodItemIcon"></i>{{oneBuilding.prodPerWorker*oneBuilding.workerNum}}</span>
+                    生産総量：<span v-for="(cls,index) in oneBuilding.prodItemIcon" :key="index"><i class="u-has-icon" :class="cls"></i>{{oneBuilding.prodPerWorker*oneBuilding.workerNum}}</span>
                 </div>
                 <div class="c-bulding-data__unit__record" v-if="isHasPropaty('comsumeFood')">
                     総食料消費：<span>{{oneBuilding.comsumeFood*oneBuilding.workerNum}}</span>
+                </div>
+                <div class="c-bulding-data__unit__record" v-if="isHasPropaty('sizeLevel')">
+                    規模レベル：<span>Lv.{{oneBuilding.sizeLevel}}</span>
+                    <useBtn v-bind:actionName="'レベルUP'" v-bind:useItems="oneBuilding.sizeLvCost" v-bind:clickMethod="levelUp" v-bind:actionAgument="0"/>
+                </div>
+                <div class="c-bulding-data__unit__record" v-if="isHasPropaty('effiLevel')">
+                    効率レベル：<span>Lv.{{oneBuilding.effiLevel}}</span>
+                    <useBtn v-bind:actionName="'レベルUP'" v-bind:useItems="oneBuilding.effiLvCost" v-bind:clickMethod="levelUp" v-bind:actionAgument="1"/>
                 </div>
             </div>
         </div>
@@ -36,6 +44,8 @@
 
 <script>
 import slider from '../common/slider';
+import useBtn from '../common/resourceUseBtn';
+
 export default {
     name:'buildingDetail',
     props:['oneBuilding','closeMethod'],
@@ -60,8 +70,11 @@ export default {
             let cityObj = this.$store.getters['city/getCityObject'](cityID);
             let err = this.oneBuilding.changeWorkerNum(val,cityObj);
             (err)?this.$store.dispatch('message/setErrMessages',err):'';
+        },
+        levelUp(type){
+            this.$store.dispatch('city/levelupValidation',{bldInst:this.oneBuilding,neddCost:this.oneBuilding.sizeLvCost,levelUpType:type});
         }
     },
-    components:{slider}
+    components:{slider,useBtn}
 }
 </script>

@@ -8,31 +8,39 @@ class BuildingInfo{
         id: To Recognize building's Order in City.
         name: Building's name.
     */
-    constructor(classID,id,cityID,name,iconClass,iconImgPath){
+    constructor(classID,id,cityID,name,iconClass,iconImgPath,sizeLevel,sizeLvCost){
         this.classID = classID;
         this.id = id;
         this.cityID = cityID;
         this.name = name;
         this.iconClass = iconClass;
         this.iconImgPath= iconImgPath;
+        this.sizeLevel = sizeLevel;
+        this.sizeLvCost = sizeLvCost;//[{'brID':int,'num':int},{'brID':int,'num':int}] never double resourceId;
     }
 }
 
-class Residense extends BuildingInfo{
-    constructor(classID,id,cityID,name,iconClass,iconImgPath){
-        super(classID,id,cityID,name,iconClass,iconImgPath);
+export class Residense extends BuildingInfo{
+    constructor(classID,id,cityID,name,iconClass,iconImgPath,sizeLevel,sizeLvCost){
+        super(classID,id,cityID,name,iconClass,iconImgPath,sizeLevel,sizeLvCost);
+    }
+    incSizeLv(){
+        this.sizeLevel +=1;
     }
 }
 
-class ProductBuilding extends BuildingInfo{
-    constructor(classID,id,cityID,name,iconClass,iconImgPath,workerNum,maxWorkerNum,prodPerWorker,comsumeFood,prodItemID){
-        super(classID,id,cityID,name,iconClass,iconImgPath);
+export class ProductBuilding extends BuildingInfo{
+    constructor(classID,id,cityID,name,iconClass,iconImgPath,workerNum,maxWorkerNum,prodPerWorker,comsumeFood,prodItemID,sizeLevel,effiLevel,sizeLvCost,effiLvCost){
+        super(classID,id,cityID,name,iconClass,iconImgPath,sizeLevel,sizeLvCost);
         this.workerNum = workerNum;
         this.maxWorkerNum = maxWorkerNum;
         this.prodPerWorker = prodPerWorker;
         this.comsumeFood = comsumeFood;
-        this.prodItemID = prodItemID;
-        this.prodItemIcon = Resource.getIconClass(prodItemID);
+        this.prodItemID = prodItemID;// ints in array
+        this.prodItemIcon = Resource.getIconClasses(prodItemID);//strings in array
+        this.sizeLevel = sizeLevel;
+        this.effiLevel = effiLevel; //effiLevel: efficient Level
+        this.effiLvCost = effiLvCost;//[{'brID':int,'num':int},{'brID':int,'num':int}] never double resourceId;
     }
     getWorkerNum(){
         return this.workerNum;
@@ -76,18 +84,32 @@ class ProductBuilding extends BuildingInfo{
     getProductNum(){
         return this.workerNum*this.prodPerWorker;
     }
+    incSizeLv(){
+        this.sizeLevel +=1;
+        this.maxWorkerNum +=5;
+    }
+    incEfficiLv(){
+        this.effiLevel +=1;
+        this.prodPerWorker +=1;
+    }
 }
 
-// class transportBuild extends ProductBuilding{
-//     constructor(classID,id,cityID,name,iconClass){
-//         super(classID,id,cityID,name,iconClass);
-//     }
-// }
+//Initial any Building Cost 
+let residensSizeUpCost = [{'brID':2,'num':15},{'brID':4,'num':20}];
+
+let commonSizeUpCost = [{'brID':2,'num':15},{'brID':4,'num':20}];
+let commonEffiUpCost = [{'brID':2,'num':30},{'brID':4,'num':40}];
+
+let farmSizeUpCost = [{'brID':2,'num':15},{'brID':4,'num':20}];
+let farmEffiUpCost = [{'brID':2,'num':30},{'brID':4,'num':40}];
+
+let factSizeUpCost = [{'brID':2,'num':15},{'brID':4,'num':20}];
+let factEffiUpCost = [{'brID':2,'num':30},{'brID':4,'num':40}];
 
 // INITIAL INSTANCE 
-let CreateResidens = (orderID,cityID)=>{ return new Residense(0,orderID,cityID,'住居','c-residence_img','residense.png')};
-let CreateFarm = (orderID,cityID)=>{ return new ProductBuilding(1,orderID,cityID,'農場','c-farm_img','farm.png',0,5,2,1,1)};//product Food:1
-let CreateFactory = (orderID,cityID)=>{ return new ProductBuilding(2,orderID,cityID,'工場','c-factory_img','factory.png',0,5,10,2,2)};//product Productivity:2
+let CreateResidens = (orderID,cityID)=>{ return new Residense(0,orderID,cityID,'住居','c-residence_img','residense.png',1,commonSizeUpCost)};
+let CreateFarm = (orderID,cityID)=>{ return new ProductBuilding(1,orderID,cityID,'農場','c-farm_img','farm.png',0,5,2,1,[1],1,1,commonSizeUpCost,commonEffiUpCost)};//product Food:1
+let CreateFactory = (orderID,cityID)=>{ return new ProductBuilding(2,orderID,cityID,'工場','c-factory_img','factory.png',0,5,10,2,[2],1,1,commonSizeUpCost,commonEffiUpCost)};//product Productivity:2
 
 // let residens =CreateResidens();
 // let farm = CreateFarm();

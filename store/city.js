@@ -1,4 +1,6 @@
 import City from '~/assets/class/cityClass';
+import {Residense} from '~/assets/class/building';
+
 import {CreateResidens,CreateFarm,CreateFactory} from '~/assets/class/building';
 import {CreateLocalBasicResource} from '~/assets/class//basicResource';
 
@@ -36,10 +38,26 @@ export const mutations ={
     setSelectedBld(state,inst){
         state.selectedBld = inst;
     },
-    turnConsume(state){
+    turnCityActivity(state){
+        //city orders the CityBuildings to product and consume items.
         state.cityData.forEach(obj=>{
+            obj.productItems();
             obj.doFoodCosume();
         })
+    },
+    levelUpResidenseSize(state,inst){
+        //inst must be Residense instance;
+        console.log('residense size');
+    },
+    levelUpSize(state,inst){
+        //inst must be building instance will be upped;
+        //except for Residense; 
+        console.log('levelUpSize size');
+
+    },
+    levelUpEfficent(state,inst){
+        //inst must be building instance will be upped;
+        console.log('levelUpSize size');
     }
 }
 
@@ -116,7 +134,7 @@ export const getters = {
         //rID:Resource ID
         let buildings = getters.getBuildingInstances(cityID);
         let target = buildings.filter(data=>{
-            return data.prodItemID == rID
+            if('prodItemID' in data) return data.prodItemID.indexOf(rID) != -1;
         })
         let productNum =0;
         target.forEach(ele=>{
@@ -137,33 +155,6 @@ export const getters = {
 }
 
 export const actions ={
-    act_createNewCity(ctx,payload){
-        if(!ctx.rootState.gameOperator.isFirstCityBuild){
-            //At first game starting, no resources needed ot build city. This is special aciton for first time.
-            
-            //change PlayerActionState to normal mode from first building mode.
-            ctx.commit('gameOperator/mutateAction',{act:'SLECTING_CITY'},{ root: true });
-            //Commit mutation to register new city.
-            //Gives selected geo id(location) and city's inputed name.
-            ctx.commit('createFirstCity',{
-                        name:payload.name,
-                        geoID:ctx.rootState.gameOperator.selectedGeoID
-                        })
-            
-            //Close the mordal for inputting city's name.
-            ctx.commit('gameOperator/mordalChange',null,{ root: true });
-            //Set city ID to geo data.
-            ctx.commit('geo/setCityID',{
-                        geoID:ctx.rootState.gameOperator.selectedGeoID,
-                        cityID:ctx.state.citytotal
-                        },{ root: true });
-            ctx.commit('gameOperator/mutateisFirstCityBuild',null,{ root: true });
-        }else{
-            //In normal building mode, it needs resource to build the city and validation is done here.
-            console.log('this is normal building mode.');
-        }
-    },
-
     createNewCityActions({state,commit},payload){
         let newCityID = state.citytotal;
         payload['newCityID'] = newCityID;
@@ -171,5 +162,41 @@ export const actions ={
         commit('createNewCity',payload);
         commit('geo/setCityID',{geoID:payload.geoID,cityID:newCityID},{root:true})
     },
+    levelupValidation({state,commit,getters,rootGetters,dispatch},payload){
+        let cityID = payload.bldInst.cityID;
+        let localResources = getters['getLocalResourceInstances'](cityID);
+        let globalResources = rootGetters['gameOperator/getGlobalResource'];
+        let resources = [...localResources,...globalResources];
+        let costs = payload.neddCost;
+
+        let isHasNum = costs.map(cost=>{
+                        let needResource = cost.brID;
+                        let needNum = cost.num;
+                        let targetResource = resources.filter(data=>{
+                            return data.brID == needResource;
+                        })
+                        let userHasNum = targetResource[0].num;
+                        return userHasNum >= needNum;
+                    });
+        if(isHasNum.includes(false)){
+            //There are shortages of Resource;
+            dispatch('message/setErrMessages',5,{root:true})
+        }else{
+            let targetbuilding = payload.bldInst;
+            switch(payload.levelUpType){
+                case 0: //size up
+                    if(targetbuilding instanceof Residense){
+                        commit('levelUpResidenseSize',targetbuilding)
+                    }else{
+                        commit('levelUpSize',targetbuilding)
+                    }
+                break;
+
+                case 1: //efficient up
+                    commit('levelUpEfficent',targetbuilding)
+                break
+            }
+        }
+    }
 }
 

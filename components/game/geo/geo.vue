@@ -113,7 +113,8 @@ export default {
             }
         },
         cityNameInputSuc(val,id){
-            this.$store.commit('geo/changeInputCityMordal')
+            this.$store.commit('geo/changeInputCityMordal');
+            this.$store.commit('gameOperator/changeActionState',-1);
             this.$store.dispatch('city/createNewCityActions',{inputName:val,geoID:this.selectedGeoCell})
         }
     },

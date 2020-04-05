@@ -1,4 +1,6 @@
+//===================
 //Game Header
+//===================
 .l-game-header{
     width: 100%;
     margin-bottom:20px;
@@ -57,7 +59,9 @@
     border-left: 10px solid transparent; 
 }
 
+//===================
 //inputmordal
+//===================
 .p-mordal__conteiner{
     position: absolute;
     top: 0;
@@ -68,7 +72,9 @@
     z-index: 2;
 }
 
+//===================
 //Slider
+//===================
 .p-rich-slider {
     display: inline-block;
     position: relative;
@@ -85,4 +91,39 @@
 
 .p-rich-slider .c-error-mes{
     position: absolute;
+}
+
+//===================
+//UseResource Btn
+//===================
+.p-item-use{
+    display: inline-block;
+    margin-left: 20px;
+
+    & span{
+        display: inline-block;
+    }
+    & .c-actionBtn{
+        font-size: 0.9rem;
+        margin-left: 5px;
+        padding: 2px 3px;
+        cursor: pointer;
+    }
+
+    & .c-need-item{
+        padding: 0px 5px;
+    }
+}
+.p-city_mainController{
+    & .c-actionBtn{
+        border: 1px solid $white;
+        border-radius: 2px;
+    }
+    // & .c-need-item{
+    //     border-right: 1px solid $white;
+
+    //     &:last-child{
+    //         border-right:none;
+    //     }
+    // }
 }

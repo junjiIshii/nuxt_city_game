@@ -19,7 +19,7 @@ export default {
     props:['localResources','workPeople'],
     computed:{
     globalResource(){
-        return this.$store.getters['gameOperator/getGlobaResource']
+        return this.$store.getters['gameOperator/getGlobalResource']
     },
     resourceNuminfo(){
         let self = this;
@@ -52,8 +52,6 @@ export default {
                     return String('('+all+')');
                 case 2://Instance Productivity
                     let protivProd = this.$store.getters['city/getResourceWillProduct'](2,cityID); //rID:1 is food
-                    
-                    if(protivProd>0)protivProd ='+'+protivProd;
                     return String('('+protivProd+')');
             }
         }
