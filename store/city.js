@@ -45,19 +45,21 @@ export const mutations ={
             obj.doFoodCosume();
         })
     },
-    levelUpResidenseSize(state,inst){
+    levelUpResidenseSize(state,payload){
         //inst must be Residense instance;
-        console.log('residense size');
+        payload.building.incResidenseSizeLv(payload.cityPeopleInst,payload.resourceInst);
+        payload.building.sizeLvCostUp();
     },
-    levelUpSize(state,inst){
+    levelUpSize(state,payload){
         //inst must be building instance will be upped;
         //except for Residense; 
-        console.log('levelUpSize size');
-
+        payload.building.incSizeLv(payload.resourceInst);
+        payload.building.sizeLvCostUp();
     },
-    levelUpEfficent(state,inst){
+    levelUpEfficent(state,payload){
         //inst must be building instance will be upped;
-        console.log('levelUpSize size');
+        payload.building.incEfficiLv(payload.resourceInst);
+        payload.building.EfficLvCostUp();
     }
 }
 
@@ -94,6 +96,15 @@ export const getters = {
                 return data.id == cityID
             })
             return cityData[0].localResource
+        }
+    },
+    getLocalPeopleInstance:(state,getters)=>cityID=>{
+        let localResource = getters.getLocalResourceInstances(cityID);
+        if(localResource !== undefined){
+            let people = localResource.filter(data=>{
+                return data.brID === 0;
+            })
+            return people[0];
         }
     },
     getLocalPeopleNum:(state,getters)=>cityID=>{
@@ -186,14 +197,15 @@ export const actions ={
             switch(payload.levelUpType){
                 case 0: //size up
                     if(targetbuilding instanceof Residense){
-                        commit('levelUpResidenseSize',targetbuilding)
+                        let peopleInst = getters['getLocalPeopleInstance'](cityID);
+                        commit('levelUpResidenseSize',{building:targetbuilding,cityPeopleInst:peopleInst,resourceInst:resources})
                     }else{
-                        commit('levelUpSize',targetbuilding)
+                        commit('levelUpSize',{building:targetbuilding,resourceInst:resources})
                     }
                 break;
 
                 case 1: //efficient up
-                    commit('levelUpEfficent',targetbuilding)
+                    commit('levelUpEfficent',{building:targetbuilding,resourceInst:resources})
                 break
             }
         }

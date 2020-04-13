@@ -40,7 +40,7 @@ export class Resource{
     getNum(){return this.num;}
     incNum(val){this.num +=val;}
     decNum(val){this.num -=val;}
-
+    
     productItem(val){
         let isStackItem = (this.storeType !== 1);
         (isStackItem)?this.num += val: this.num = val;

@@ -28,11 +28,11 @@
                     </div>
                     <div class="c-bulding-data__unit__record" v-if="isHasPropaty('sizeLevel')">
                         規模レベル：<span>Lv.{{buildInstance.sizeLevel}}</span>
-                        <useBtn v-bind:actionName="'レベルUP'" v-bind:useItems="buildInstance.sizeLvCost" v-bind:clickMethod="levelUp"/>
+                        <useBtn v-bind:actionName="'レベルUP'" v-bind:useItems="buildInstance.sizeLvCost" v-bind:clickMethod="levelUp" v-bind:actionAgument="0"/>
                     </div>
                     <div class="c-bulding-data__unit__record" v-if="isHasPropaty('effiLevel')">
                         効率レベル：<span>Lv.{{buildInstance.effiLevel}}</span>
-                        <useBtn v-bind:actionName="'レベルUP'" v-bind:useItems="buildInstance.effiLvCost" v-bind:clickMethod="levelUp"/>
+                        <useBtn v-bind:actionName="'レベルUP'" v-bind:useItems="buildInstance.effiLvCost" v-bind:clickMethod="levelUp" v-bind:actionAgument="1"/>
                     </div>
                 </div>
             </div>
@@ -71,8 +71,8 @@ export default {
             let err = this.buildInstance.changeWorkerNum(val,cityObj);
             (err)?this.$store.dispatch('message/setErrMessages',err):'';
         },
-        levelUp(){
-            console.log('levelUP!!')
+        levelUp(type){
+            this.$store.dispatch('city/levelupValidation',{bldInst:this.buildInstance,neddCost:this.buildInstance.sizeLvCost,levelUpType:type});
         }
     },
     components:{slider,useBtn}

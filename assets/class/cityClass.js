@@ -70,3 +70,12 @@ export default class City{
         })
     }
 }
+
+class CityBudgets{
+    constructor(ResidentTax,incomeTax){
+        this.ResidentTax = ResidentTax;
+        this.incomeTax = incomeTax;
+
+
+    }
+}
