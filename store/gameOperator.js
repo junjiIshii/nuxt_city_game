@@ -1,4 +1,4 @@
-import {globalResource} from '~/assets/class/basicResource';
+import {Resource,globalResource} from '~/assets/class/basicResource';
 
 export const state = () =>({
     turn:1,
@@ -42,6 +42,7 @@ export const mutations ={
         state.viewmode = viewMode;
     },
     proceedNextTurn(state){
+        Resource.debugMoneyInc(20);
         state.turn +=1;
     }
 };
