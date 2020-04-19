@@ -5,7 +5,7 @@
                 閉じる
             </div>
             <p class="c-mordal__desctionption">{{desctionption}}</p>
-            <input type="text" :placeholder="placeholder" v-model="inputed" v-on:keyup.enter.shift="submmitVal">
+            <input type="text" :placeholder="placeholder" v-model="inputed" v-on:keyup.enter.shift="submmitVal" ref="autoF">
             <button class="c-mordal__decide" v-on:click="submmitVal">決定</button>
             <p>{{error}}</p>
         </div>
@@ -36,6 +36,9 @@ export default {
         closeMordal(){
             this.$store.commit('geo/changeInputCityMordal')
         }
+    },
+    mounted(){
+        this.$refs.autoF.focus();
     }
 }
 </script>
