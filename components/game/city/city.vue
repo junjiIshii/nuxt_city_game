@@ -1,12 +1,12 @@
 <template>
     <div class="l-city_conteiner">
-        <p>{{cityName}}</p>
+        <p class="c-city_name">{{cityName}}</p>
         <div class="l-city_controllers">
             <subController
                 v-bind:localResources="localResources"
                 v-bind:workPeople="getOnWorkePeople"
             />
-            <div>
+            <div class="p-main_controller__conteiner">
                 <div v-on:click="changeBuildListMode">表示変更</div>
                 <mainController v-bind:buildObj="cityBuilding"></mainController>
             </div>

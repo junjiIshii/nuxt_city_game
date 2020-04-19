@@ -7,7 +7,6 @@ $cityConteiner_pad:10px;
 .p-city_mainController{
     width: 100%;
     height: 400px;
-    max-width: 500px;
     margin:0 auto;
     background: $black;
     overflow-y: scroll;
@@ -27,6 +26,16 @@ $cityConteiner_pad:10px;
 
     @media(max-width: 500px){
         max-width: 500px;
+    }
+}
+
+//layouts
+.l-city_controllers{
+    display: flex;
+    justify-content: center;
+
+    .c-city_name{
+
     }
 }
 
@@ -79,6 +88,12 @@ $cityConteiner_pad:10px;
 }
 
 //building record rows
+.p-main_controller__conteiner{
+    min-width: 300px;
+    width: 100%;
+    max-width: 500px;
+}
+
 .p-city_mainController{
     .c-bulding-data__unit__record{
         padding: 2px 0px;
@@ -91,21 +106,22 @@ $cityConteiner_pad:10px;
 
 //sub controller
 .p-resource-info{
-    border: 1px solid black;
-
+    margin-right: 10px;
     & .c-resource-info{
         display: flex;
         align-items: center;
-        border-bottom: 1px solid black;
-
+        border-width:1px 1px 0px 1px;
+        border-style: solid;
+        border-color: black;
+        padding: 5px;
         &:last-child{
-            border-bottom: none;
+            border-width:1px 1px 1px 1px;
         }
 
         & .c-resource-info__name{
             width: 100px;
-            padding: 5px;
             text-align: right;
+            margin-right: 5px;
         }
 
         & .c-resource-info__num{
@@ -133,6 +149,7 @@ $cityConteiner_pad:10px;
 .u-icon-happiness::before{content:"\f5b8";}
 
 //list Mode
+
 .p-city_mainController__wrapper.is-ListMode{
     max-width: 100%;
     flex-direction: column;
