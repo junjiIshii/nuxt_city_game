@@ -57,6 +57,10 @@ export class Resource{
             globalResource[2].incNum(val);
         }
     }
+
+    static debugMoneyInc(val){
+        globalResource[0].incNum(val);
+    }
 }
 
 export class LocalResource extends Resource{
@@ -72,11 +76,27 @@ export class GlobalResource extends Resource{
     }
 }
 
-// let wealth = new GlobalResource(4,'u-icon-wealth','資金',100);
-// let research = new GlobalResource(5,'u-icon-research','研究力',0);
-// let anger = new GlobalResource(6,'u-icon-anger','不満',0);
-// let score = new GlobalResource(7,'u-icon-score','スコア',0);
-// let glResource = [wealth,research,anger,score]
+export class proessingResource extends Resource{
+    constructor(brID,iconClass,name,num,storeType,fpi,ppi,mpi,hpi,materials,volume,mass){
+        super(brID,iconClass,name,num,storeType);
+        this.fpi=fpi; //Conversion to Food per this item(resource). 
+        this.ppi=ppi; //Conversion to Productivity per this item. 
+        this.mpi=mpi; //Conversion to money per this item. 
+        this.hpi=hpi; //Conversion to happiness per this item. 
+        this.materials=materials; //array
+        this.volume=volume;
+        this.mass=mass;
+    }
+    static createProessingResource(brID){
+        let idStart = 8;
+        
+        const lists=[
+            {name:'砂糖',toFood:'5',toProd:0,toMoney:2,toHapi:2,materials:[],vol:1,mass:1,} 
+        ]
+    }
+}
+
+
 let CreateLocalGlobalResource = ()=>{
     return [
         new GlobalResource(4,'u-icon-wealth','資金',100,0),
