@@ -7,9 +7,9 @@ export const state = () =>({
     isMordalOpen:false,
     isJapanese:true,
     selectedGeoID:undefined,
-    selectedCityID:-1,
+    selectedCityID:undefined,
     actionState:0,
-    viewmode:0,
+    viewmode:0, //0=>geo ,1=>city
     globalResource:undefined
 });
 
@@ -62,7 +62,14 @@ export const getters ={
     },
     getisFirstCityBuild(state){
         return state.isFirstCityBuild
-    }
+    },
+    isResourceEnoughInGlobal:(state) => (brID,needs) =>{
+            let globalResource = state.globalResource.filter(data=>{
+                return data.brID == brID
+            })
+            let having = globalResource[0].num
+            return (needs <=  having)?'u-ENOUHG':'u-LESS';
+        }
 };
 
 export const actions ={
@@ -93,6 +100,10 @@ export const actions ={
     changeToCityMode({commit},val){
         commit('mutateViewMode',1);
         commit('setSelectedCityID',val)
+    },
+    changeToGeoMode({commit}){
+        commit('mutateViewMode',0);
+        commit('setSelectedCityID',undefined)
     },
     goNextTurn({commit}){
         commit('proceedNextTurn');
