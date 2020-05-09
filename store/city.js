@@ -82,7 +82,7 @@ export const getters = {
             return cityData[0];
         }
     },
-    getBuildingInstances:state=>cityID=>{
+    getBuildingInstances:(state,getters)=>cityID=>{
         if(cityID !== undefined){
             let cityData = state.cityData.filter(data=>{
                 return data.id == cityID
@@ -96,6 +96,15 @@ export const getters = {
                 return data.id == cityID
             })
             return cityData[0].localResource
+        }
+    },
+    getLocalResourceInstance:(state,getters)=>(cityID,brID)=>{
+        if(cityID !== undefined){
+            let localResource = getters.getLocalResourceInstances(cityID);
+            let targetResource = localResource.filter(data=>{
+                return data.brID == brID
+            })
+            return targetResource[0]
         }
     },
     getLocalPeopleInstance:(state,getters)=>cityID=>{
@@ -152,6 +161,11 @@ export const getters = {
             productNum +=ele.workerNum*ele.prodPerWorker
         })
         return productNum;
+    },
+    isResourceEnoughInCity:(state,getters)=>(brID,cityID,needs)=>{
+        let localResource = getters.getLocalResourceInstance(cityID,brID); //return any[0]
+        let having = localResource.num
+        return (needs <=  having)?'u-ENOUHG':'u-LESS';
     },
     isDoubleNameExist:(state)=>name=>{
         if(state.cityData.length >0){
