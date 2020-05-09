@@ -8,7 +8,7 @@ class BuildingInfo{
         id: To Recognize building's Order in City.
         name: Building's name.
     */
-    constructor(classID,id,cityID,name,iconClass,iconImgPath,sizeLevel,sizeLvCost){
+    constructor(classID,id,cityID,name,iconClass,iconImgPath,sizeLevel,sizeLvCost,maxSizeLv){
         this.classID = classID;
         this.id = id;
         this.cityID = cityID;
@@ -17,6 +17,7 @@ class BuildingInfo{
         this.iconImgPath= iconImgPath;
         this.sizeLevel = sizeLevel;
         this.sizeLvCost = sizeLvCost;//[{'brID':int,'num':int},{'brID':int,'num':int}] never double resourceId;
+        this.maxSizeLv = maxSizeLv;
     }
     sizeLvCostUp(){
         let costUpRaito = 1.2;
@@ -28,8 +29,8 @@ class BuildingInfo{
 }
 
 export class Residense extends BuildingInfo{
-    constructor(classID,id,cityID,name,iconClass,iconImgPath,sizeLevel,sizeLvCost){
-        super(classID,id,cityID,name,iconClass,iconImgPath,sizeLevel,sizeLvCost);
+    constructor(classID,id,cityID,name,iconClass,iconImgPath,sizeLevel,sizeLvCost,maxSizeLv){
+        super(classID,id,cityID,name,iconClass,iconImgPath,sizeLevel,sizeLvCost,maxSizeLv);
     }
     incResidenseSizeLv(peopleInst,resources){
         this.sizeLevel +=1;
@@ -44,8 +45,8 @@ export class Residense extends BuildingInfo{
 }
 
 export class ProductBuilding extends BuildingInfo{
-    constructor(classID,id,cityID,name,iconClass,iconImgPath,workerNum,maxWorkerNum,prodPerWorker,comsumeFood,prodItemID,sizeLevel,effiLevel,sizeLvCost,effiLvCost){
-        super(classID,id,cityID,name,iconClass,iconImgPath,sizeLevel,sizeLvCost);
+    constructor(classID,id,cityID,name,iconClass,iconImgPath,workerNum,maxWorkerNum,prodPerWorker,comsumeFood,prodItemID,sizeLevel,effiLevel,sizeLvCost,effiLvCost,maxSizeLv,maxEffiLv){
+        super(classID,id,cityID,name,iconClass,iconImgPath,sizeLevel,sizeLvCost,maxSizeLv);
         this.workerNum = workerNum;
         this.maxWorkerNum = maxWorkerNum;
         this.prodPerWorker = prodPerWorker;
@@ -55,6 +56,8 @@ export class ProductBuilding extends BuildingInfo{
         this.sizeLevel = sizeLevel;
         this.effiLevel = effiLevel; //effiLevel: efficient Level
         this.effiLvCost = effiLvCost;//[{'brID':int,'num':int},{'brID':int,'num':int}] never double resourceId;
+        this.maxSizeLv = maxSizeLv;
+        this.maxEffiLv = maxEffiLv;
     }
     getWorkerNum(){
         return this.workerNum;
@@ -141,9 +144,80 @@ const factSizeUpCost = [{'brID':2,'num':15},{'brID':4,'num':20}];
 const factEffiUpCost = [{'brID':2,'num':30},{'brID':4,'num':40}];
 
 // INITIAL INSTANCE 
-let CreateResidens = (orderID,cityID)=>{ return new Residense(0,orderID,cityID,'住居','c-residence_img','residense.png',1,[{'brID':2,'num':15},{'brID':4,'num':20}])};
-let CreateFarm = (orderID,cityID)=>{ return new ProductBuilding(1,orderID,cityID,'農場','c-farm_img','farm.png',0,5,2,1,[1],1,1,[{'brID':2,'num':15},{'brID':4,'num':20}],[{'brID':2,'num':30},{'brID':4,'num':40}])};//product Food:1
-let CreateFactory = (orderID,cityID)=>{ return new ProductBuilding(2,orderID,cityID,'工場','c-factory_img','factory.png',0,5,10,2,[2],1,1,[{'brID':2,'num':15},{'brID':4,'num':20}],[{'brID':2,'num':30},{'brID':4,'num':40}])};//product Productivity:2
+
+/*
+    classID,
+    id,
+    cityID,
+    name,
+    iconClass,____5
+    iconImgPath,
+    workerNum,
+    maxWorkerNum,
+    prodPerWorker,
+    comsumeFood,____10
+    prodItemID,
+    sizeLevel,
+    effiLevel,
+    sizeLvCost,
+    effiLvCost,
+    maxSizeLv,
+    maxEffiLv 
+*/
+let CreateResidens = (orderID,cityID)=>{ 
+    return new Residense(
+        0,
+        orderID,
+        cityID,
+        '住居',
+        'c-residence_img',
+        'residense.png',
+        1,
+        [{'brID':2,'num':15},{'brID':4,'num':20}],
+        10
+    )};
+    
+let CreateFarm = (orderID,cityID)=>{ 
+    return new ProductBuilding(
+        1,
+        orderID,
+        cityID,
+        '農場',
+        'c-farm_img',
+        'farm.png',
+        0,
+        5,
+        2,
+        1,
+        [1],
+        1,
+        1,
+        [{'brID':2,'num':15},{'brID':4,'num':20}],
+        [{'brID':2,'num':30},{'brID':4,'num':40}],
+        10,
+        10
+    )};//product Food:1
+
+    let CreateFactory = (orderID,cityID)=>{ 
+    return new ProductBuilding(
+        2,
+        orderID,
+        cityID,
+        '工場',
+        'c-factory_img',
+        'factory.png',
+        0,
+        5,
+        10,
+        2,
+        [2],
+        1,
+        1,
+        [{'brID':2,'num':15},{'brID':4,'num':20}],
+        [{'brID':2,'num':30},{'brID':4,'num':40}],
+        10,
+        10
+    )};//product Productivity:2
 
 // let residens =CreateResidens();
 // let farm = CreateFarm();
