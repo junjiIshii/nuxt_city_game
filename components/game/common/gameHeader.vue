@@ -57,8 +57,9 @@ export default {
             if(actID!==cache && actID !== 100 && actID !==9){
                 this.$store.commit('gameOperator/changeActionState',actID);
             }else if(actID ===9){
-                this.$store.commit('gameOperator/mutateViewMode',0);
+                // this.$store.commit('gameOperator/mutateViewMode',0);
                 this.$store.commit('gameOperator/changeActionState',-1);
+                this.$store.dispatch('gameOperator/changeToGeoMode');
             }else if(actID ===100){
                 this.$store.dispatch('gameOperator/goNextTurn');
             }else{
