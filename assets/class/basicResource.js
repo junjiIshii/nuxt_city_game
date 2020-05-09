@@ -76,8 +76,25 @@ export class GlobalResource extends Resource{
     }
 }
 
-export class proessingResource extends Resource{
-    constructor(brID,iconClass,name,num,storeType,fpi,ppi,mpi,hpi,materials,volume,mass){
+let proessingResourceRawlists=[
+    {class:'dummy',name:'砂糖',storeType:0,num:0,toFood:5,toProd:0,toMoney:2,toHapi:2,materials:[],vol:1,mass:2,terrian:[],cityID:undefined,geoID:undefined},
+    {class:'dummy',name:'小麦',storeType:0,num:0,toFood:8,toProd:0,toMoney:2,toHapi:0,materials:[],vol:2,mass:2,terrian:[]},
+    {class:'dummy',name:'フルーツ',storeType:0,num:0,toFood:2,toProd:0,toMoney:3,toHapi:3,materials:[],vol:3,mass:3,terrian:[]},
+    {class:'dummy',name:'家畜',storeType:0,num:0,toFood:6,toProd:0,toMoney:3,toHapi:1,materials:[],vol:5,mass:5,terrian:[]},
+    {class:'dummy',name:'染料',storeType:0,num:0,toFood:6,toProd:0,toMoney:3,toHapi:1,materials:[],vol:5,mass:5,terrian:[]},
+    {class:'dummy',name:'綿',storeType:0,num:0,toFood:6,toProd:0,toMoney:3,toHapi:1,materials:[],vol:5,mass:5,terrian:[]},
+]
+let idStart = 100;
+let proessingResourcelists = [];
+proessingResourceRawlists.forEach(ele => {
+    // ele.brID = idStart;
+    // Object.assign({brID:idStart},ele);
+    proessingResourcelists.push(Object.assign({brID:idStart},ele))
+    idStart++;
+});
+
+export class ProessingResource extends Resource{
+    constructor(brID,iconClass,name,num,storeType,fpi,ppi,mpi,hpi,materials,volume,mass,terrian,cityID,geoID){
         super(brID,iconClass,name,num,storeType);
         this.fpi=fpi; //Conversion to Food per this item(resource). 
         this.ppi=ppi; //Conversion to Productivity per this item. 
@@ -86,16 +103,36 @@ export class proessingResource extends Resource{
         this.materials=materials; //array
         this.volume=volume;
         this.mass=mass;
+        this.getTerrian=terrian;//array
+        this.cityID=cityID;
+        this.geoID=geoID;
     }
-    static createProessingResource(brID){
-        let idStart = 8;
-        
-        const lists=[
-            {name:'砂糖',toFood:'5',toProd:0,toMoney:2,toHapi:2,materials:[],vol:1,mass:1,} 
-        ]
+
+    static createProessingResourceById(brID){
+        let target = proessingResourcelists.filter(data=>{
+            return data.brID == brID;
+        })
+        if(target.length !== 0){
+            let obj = Object.values(target[0])
+            return new ProessingResource(...obj) 
+        }else{
+            console.error('No exit such ID of resource :'+brID);
+        }
+    }
+
+    static createProessingResourceByName(brName){
+        let target = proessingResourcelists.filter(data=>{
+            return data.name == brName;
+        })
+
+        if(target.length !== 0){
+            let obj = Object.values(target[0])
+            return new ProessingResource(...obj)
+        }else{
+            console.error('No exit such name of resource :'+brName);
+        }
     }
 }
-
 
 let CreateLocalGlobalResource = ()=>{
     return [
@@ -115,6 +152,6 @@ let CreateLocalBasicResource = (cityID)=>{
     ]
 }
 
-export {CreateLocalBasicResource,globalResource}
+export {CreateLocalBasicResource,globalResource,proessingResourcelists}
 
 
