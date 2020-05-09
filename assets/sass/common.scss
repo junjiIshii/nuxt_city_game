@@ -112,6 +112,14 @@
 
     & .c-need-item{
         padding: 0px 5px;
+        font-weight: bold;
+        &.u-LESS{
+            color:$red;
+        }
+
+        &.u-ENOUHG{
+            color:$green;
+        }
     }
 }
 .p-city_mainController{
