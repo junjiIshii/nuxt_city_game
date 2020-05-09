@@ -96,11 +96,18 @@ $cityConteiner_pad:10px;
 
 .p-city_mainController{
     .c-bulding-data__unit__record{
+        display: flex;
         padding: 2px 0px;
-
         &:first-child{padding: 0px 0px 2px 0px}
         &:last-child{padding: 2px 0px 0px 0px}
 
+        .p-rich-slider{
+            margin-left: auto;
+        }
+    }
+
+    .c-basic_records{
+        width: 100%;
     }
 }
 
