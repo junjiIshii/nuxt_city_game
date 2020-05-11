@@ -1,3 +1,5 @@
+import {ProessingResource} from './basicResource';
+
 export default class Geo{
     constructor(allX,allY,cells){
         this.allX = allX;
@@ -42,19 +44,22 @@ export class GeoCell{
 }
 
 export class Terrian{
-    constructor(id,name,className){
+    constructor(id,name,className,naturalResource){
         this.id = id;
         this.name = name;
         this.className = className;
         this.ablebuild = [1,3];
+        this.naturalResource = naturalResource
     }
 
     static createRandomTerrian(rd){
         let n = Math.random();
+        let r = Math.random();
+        let resource = (r<0.1)? ProessingResource.createProessingResourceByName('砂糖'):undefined;
         if(n<rd){
-            return new Terrian(1,'平地','u-plane');
+            return new Terrian(1,'平地','u-plane',resource);
         }else{
-            return new Terrian(2,'海','u-sea');
+            return new Terrian(2,'海','u-sea',undefined);
         }
     }
 
