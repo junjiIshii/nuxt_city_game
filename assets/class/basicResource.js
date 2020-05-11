@@ -7,31 +7,23 @@ export class Resource{
         this.storeType = storeType; // 0=> able to stack; 1=>not able to stack
     }
     static getIconClasses(ids){
-        let classes = [
-            'u-icon-people',
-            'u-icon-food',
-            'u-icon-prodpow',
-            'u-icon-happiness',
-            'u-icon-wealth',
-            'u-icon-research',
-            'u-icon-anger',
-            'u-icon-score'
-        ]
-        let icons = ids.map(ele=>classes[ele]);
+        let list = [...classes,...proessingResourcelists]
+
+        let icons = ids.map(ele=>{
+            let result = list.filter(data=>{
+                return data.id == ele;
+            })
+            return result[0].class
+        });
         return icons;
     }
     static getIconClass(id){
-        let classes = [
-            'u-icon-people',
-            'u-icon-food',
-            'u-icon-prodpow',
-            'u-icon-happiness',
-            'u-icon-wealth',
-            'u-icon-research',
-            'u-icon-anger',
-            'u-icon-score'
-        ]
-        return classes[id];
+        let list = [...classes,...proessingResourcelists]
+
+        let result = list.filter(data=>{
+            return data.id == id;
+        })
+        return result[0].class;
     }
     static isGlobalResource(id){
         return (id >= 4);
@@ -63,6 +55,18 @@ export class Resource{
     }
 }
 
+let classes = [
+    {id:0,class:'u-icon-people'},
+    {id:1,class:'u-icon-food'},
+    {id:2,class:'u-icon-prodpow'},
+    {id:3,class:'u-icon-happiness'},
+    {id:4,class:'u-icon-wealth'},
+    {id:5,class:'u-icon-research'},
+    {id:6,class:'u-icon-anger'},
+    {id:7,class:'u-icon-score'}
+]
+
+
 export class LocalResource extends Resource{
     constructor(brID,iconClass,name,num,storeType,cityID){
         super(brID,iconClass,name,num,storeType);
@@ -76,22 +80,22 @@ export class GlobalResource extends Resource{
     }
 }
 
-let proessingResourceRawlists=[
-    {class:'dummy',name:'砂糖',storeType:0,num:0,toFood:5,toProd:0,toMoney:2,toHapi:2,materials:[],vol:1,mass:2,terrian:[],cityID:undefined,geoID:undefined},
-    {class:'dummy',name:'小麦',storeType:0,num:0,toFood:8,toProd:0,toMoney:2,toHapi:0,materials:[],vol:2,mass:2,terrian:[]},
-    {class:'dummy',name:'フルーツ',storeType:0,num:0,toFood:2,toProd:0,toMoney:3,toHapi:3,materials:[],vol:3,mass:3,terrian:[]},
-    {class:'dummy',name:'家畜',storeType:0,num:0,toFood:6,toProd:0,toMoney:3,toHapi:1,materials:[],vol:5,mass:5,terrian:[]},
-    {class:'dummy',name:'染料',storeType:0,num:0,toFood:6,toProd:0,toMoney:3,toHapi:1,materials:[],vol:5,mass:5,terrian:[]},
-    {class:'dummy',name:'綿',storeType:0,num:0,toFood:6,toProd:0,toMoney:3,toHapi:1,materials:[],vol:5,mass:5,terrian:[]},
+let proessingResourcelists=[
+    {id:100,class:'u-has-resource u-r--suger',name:'砂糖',num:2000,storeType:0,toFood:5,toProd:0,toMoney:2,toHapi:2,materials:[],vol:1,mass:2,terrian:[],cityID:undefined,geoID:undefined},
+    {id:101,class:'dummy',name:'小麦',num:0,storeType:0,toFood:8,toProd:0,toMoney:2,toHapi:0,materials:[],vol:2,mass:2,terrian:[]},
+    {id:102,class:'dummy',name:'フルーツ',num:0,storeType:0,toFood:2,toProd:0,toMoney:3,toHapi:3,materials:[],vol:3,mass:3,terrian:[]},
+    {id:103,class:'dummy',name:'家畜',num:0,storeType:0,toFood:6,toProd:0,toMoney:3,toHapi:1,materials:[],vol:5,mass:5,terrian:[]},
+    {id:104,class:'dummy',name:'染料',num:0,storeType:0,toFood:6,toProd:0,toMoney:3,toHapi:1,materials:[],vol:5,mass:5,terrian:[]},
+    {id:105,class:'dummy',name:'綿',num:0,storeType:0,toFood:6,toProd:0,toMoney:3,toHapi:1,materials:[],vol:5,mass:5,terrian:[]},
 ]
-let idStart = 100;
-let proessingResourcelists = [];
-proessingResourceRawlists.forEach(ele => {
-    // ele.brID = idStart;
-    // Object.assign({brID:idStart},ele);
-    proessingResourcelists.push(Object.assign({brID:idStart},ele))
-    idStart++;
-});
+// let idStart = 100;
+// let proessingResourcelists = [];
+// proessingResourceRawlists.forEach(ele => {
+//     // ele.brID = idStart;
+//     // Object.assign({brID:idStart},ele);
+//     proessingResourcelists.push(Object.assign({brID:idStart},ele))
+//     idStart++;
+// });
 
 export class ProessingResource extends Resource{
     constructor(brID,iconClass,name,num,storeType,fpi,ppi,mpi,hpi,materials,volume,mass,terrian,cityID,geoID){
