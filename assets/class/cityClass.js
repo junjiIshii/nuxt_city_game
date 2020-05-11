@@ -43,7 +43,7 @@ export default class City{
 
     productItems(){
         this.buildings.forEach(obj=>{
-            if('workerNum' in obj){
+            if('workerNum' in obj && !('ableCollect' in obj)){
                 let worker = obj.workerNum;
                 let raito = obj.prodPerWorker;
                 let prodsNum = worker * raito;
