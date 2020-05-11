@@ -8,7 +8,7 @@ class BuildingInfo{
         id: To Recognize building's Order in City.
         name: Building's name.
     */
-    constructor(classID,id,cityID,name,iconClass,iconImgPath,sizeLevel,sizeLvCost,maxSizeLv){
+    constructor(classID,id,cityID,name,iconClass,iconImgPath,sizeLevel,sizeLvCost,maxSizeLv,isUnlock,buildUpCost){
         this.classID = classID;
         this.id = id;
         this.cityID = cityID;
@@ -18,6 +18,8 @@ class BuildingInfo{
         this.sizeLevel = sizeLevel;
         this.sizeLvCost = sizeLvCost;//[{'brID':int,'num':int},{'brID':int,'num':int}] never double resourceId;
         this.maxSizeLv = maxSizeLv;
+        this.isUnlock = isUnlock;
+        this.buildUpCost = buildUpCost;
     }
     sizeLvCostUp(){
         let costUpRaito = 1.2;
@@ -29,8 +31,8 @@ class BuildingInfo{
 }
 
 export class Residense extends BuildingInfo{
-    constructor(classID,id,cityID,name,iconClass,iconImgPath,sizeLevel,sizeLvCost,maxSizeLv){
-        super(classID,id,cityID,name,iconClass,iconImgPath,sizeLevel,sizeLvCost,maxSizeLv);
+    constructor(classID,id,cityID,name,iconClass,iconImgPath,sizeLevel,sizeLvCost,maxSizeLv,isUnlock,buildUpCost){
+        super(classID,id,cityID,name,iconClass,iconImgPath,sizeLevel,sizeLvCost,maxSizeLv,isUnlock,buildUpCost);
     }
     incResidenseSizeLv(peopleInst,resources){
         this.sizeLevel +=1;
@@ -44,21 +46,22 @@ export class Residense extends BuildingInfo{
     }
 }
 
-export class ProductBuilding extends BuildingInfo{
-    constructor(classID,id,cityID,name,iconClass,iconImgPath,workerNum,maxWorkerNum,prodPerWorker,comsumeFood,prodItemID,sizeLevel,effiLevel,sizeLvCost,effiLvCost,maxSizeLv,maxEffiLv){
-        super(classID,id,cityID,name,iconClass,iconImgPath,sizeLevel,sizeLvCost,maxSizeLv);
+//static claas for building that produces ,collects or processes any items
+//these buildings product any items with working people.
+class ProduvtiveBuilding extends BuildingInfo{
+    constructor(classID,id,cityID,name,iconClass,iconImgPath,workerNum,maxWorkerNum,prodPerWorker,comsumeFood,sizeLevel,effiLevel,sizeLvCost,effiLvCost,maxSizeLv,maxEffiLv,isUnlock,buildUpCost){
+        super(classID,id,cityID,name,iconClass,iconImgPath,sizeLevel,sizeLvCost,maxSizeLv,isUnlock,buildUpCost);
         this.workerNum = workerNum;
         this.maxWorkerNum = maxWorkerNum;
         this.prodPerWorker = prodPerWorker;
         this.comsumeFood = comsumeFood;
-        this.prodItemID = prodItemID;// ints in array
-        this.prodItemIcon = Resource.getIconClasses(prodItemID);//strings in array
         this.sizeLevel = sizeLevel;
         this.effiLevel = effiLevel; //effiLevel: efficient Level
         this.effiLvCost = effiLvCost;//[{'brID':int,'num':int},{'brID':int,'num':int}] never double resourceId;
         this.maxSizeLv = maxSizeLv;
         this.maxEffiLv = maxEffiLv;
     }
+
     getWorkerNum(){
         return this.workerNum;
     }
@@ -129,6 +132,45 @@ export class ProductBuilding extends BuildingInfo{
             data.num = costUp;
         })
     }
+    spendBuildUpCost(resources){
+        this.buildUpCost.forEach(data=>{
+            let targetResource = resources.filter(res=>{
+                return res.brID == data.brID;
+            })
+            targetResource[0].decNum(data.num);
+        })
+    }
+}
+
+
+// Simply product any basic resource (like food ) with worker.
+export class ProductBuilding extends ProduvtiveBuilding{
+    constructor(classID,id,cityID,name,iconClass,iconImgPath,workerNum,maxWorkerNum,prodPerWorker,comsumeFood,prodItemID,sizeLevel,effiLevel,sizeLvCost,effiLvCost,maxSizeLv,maxEffiLv,isUnlock,buildUpCost){
+        super(classID,id,cityID,name,iconClass,iconImgPath,workerNum,maxWorkerNum,prodPerWorker,comsumeFood,sizeLevel,effiLevel,sizeLvCost,effiLvCost,maxSizeLv,maxEffiLv,isUnlock,buildUpCost);
+        this.prodItemID = prodItemID;// ints in array
+        this.prodItemIcon = Resource.getIconClasses(prodItemID);//strings in array
+    }
+}
+
+// collect any natural resource (like suger, iron) with worker.
+export class CollectionBuilding extends ProduvtiveBuilding{
+    constructor(classID,id,cityID,name,iconClass,
+                iconImgPath,workerNum,maxWorkerNum,prodPerWorker,
+                comsumeFood,sizeLevel,effiLevel,
+                sizeLvCost,effiLvCost,maxSizeLv,maxEffiLv,
+                isUnlock,buildUpCost,ableCollect)
+    {
+        super(classID,id,cityID,name,iconClass,iconImgPath,workerNum,maxWorkerNum,prodPerWorker,comsumeFood,sizeLevel,effiLevel,sizeLvCost,effiLvCost,maxSizeLv,maxEffiLv,isUnlock,buildUpCost)
+        this.ableCollect = ableCollect;
+        this.prodItemID = [100];
+        this.prodItemIcon = Resource.getIconClasses(this.prodItemID);//strings in array
+        // this.collectItemID = undefined;
+    }
+
+    setItem(brID){
+        this.prodItemID[0] = brID;
+    }
+    
 }
 
 //Initial any Building Cost 
@@ -162,9 +204,11 @@ const factEffiUpCost = [{'brID':2,'num':30},{'brID':4,'num':40}];
     sizeLvCost,
     effiLvCost,
     maxSizeLv,
-    maxEffiLv 
+    maxEffiLv,
+    isUnlock
 */
-let CreateResidens = (orderID,cityID)=>{ 
+
+let CreateResidens = {id:0,method:(orderID,cityID,isUnlock=true)=>{ 
     return new Residense(
         0,
         orderID,
@@ -174,10 +218,12 @@ let CreateResidens = (orderID,cityID)=>{
         'residense.png',
         1,
         [{'brID':2,'num':15},{'brID':4,'num':20}],
-        10
-    )};
+        10,
+        isUnlock,
+        [{'brID':2,'num':300},{'brID':4,'num':300}]
+    )}};
     
-let CreateFarm = (orderID,cityID)=>{ 
+let CreateFarm = {id:1,method:(orderID,cityID,isUnlock=true)=>{ 
     return new ProductBuilding(
         1,
         orderID,
@@ -195,10 +241,12 @@ let CreateFarm = (orderID,cityID)=>{
         [{'brID':2,'num':15},{'brID':4,'num':20}],
         [{'brID':2,'num':30},{'brID':4,'num':40}],
         10,
-        10
-    )};//product Food:1
+        10,
+        isUnlock,
+        [{'brID':2,'num':250},{'brID':4,'num':100}]
+    )}};//product Food:1
 
-    let CreateFactory = (orderID,cityID)=>{ 
+    let CreateFactory = {id:2,method:(orderID,cityID,isUnlock=true)=>{ 
     return new ProductBuilding(
         2,
         orderID,
@@ -216,11 +264,50 @@ let CreateFarm = (orderID,cityID)=>{
         [{'brID':2,'num':15},{'brID':4,'num':20}],
         [{'brID':2,'num':30},{'brID':4,'num':40}],
         10,
-        10
-    )};//product Productivity:2
+        10,
+        isUnlock,
+        [{'brID':2,'num':450},{'brID':4,'num':200}]
+    )}};//product Productivity:2
 
-// let residens =CreateResidens();
-// let farm = CreateFarm();
-// let factory = CreateFactory();
+    let CreatePlantation = {id:3,method:(orderID,cityID,isUnlock=true)=>{
+        return new CollectionBuilding(
+            3,
+            orderID,
+            cityID,
+            '栽培所',
+            'c-plantation_img',
+            'plantation.png',
+            0,
+            5,
+            10,
+            2,
+            1,
+            1,
+            [{'brID':2,'num':15},{'brID':4,'num':20}],
+            [{'brID':2,'num':30},{'brID':4,'num':40}],
+            15,
+            15,
+            isUnlock,
+            [{'brID':2,'num':50},{'brID':4,'num':30}],
+            [100,101,102,103,104,105]//sugure, wheat, fruits, livestock, dye, cotton
+        )
+    }}
 
-export{CreateResidens,CreateFarm,CreateFactory}
+
+
+// Building instance for list
+let buildingList = [
+    CreateResidens.method(0,undefined),
+    CreateFarm.method(1,undefined),
+    CreateFactory.method(2,undefined),
+    CreatePlantation.method(3,undefined)
+]
+
+let buildMethodList = [
+    CreateResidens,
+    CreateFarm,
+    CreateFactory,
+    CreatePlantation
+]
+
+export{CreateResidens,CreateFarm,CreateFactory,buildMethodList,buildingList}
