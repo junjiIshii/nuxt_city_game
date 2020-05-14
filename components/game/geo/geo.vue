@@ -91,13 +91,13 @@ export default {
                 case 5:
                     if(isHasCity){
                         let cityID = this.$store.getters['geo/getCityIdByGeo'](id);
-                        this.$store.dispatch('gameOperator/changeToCityMode',cityID);
+                        this.$store.dispatch('gameOperator/changeToCityMode',{cityID:cityID,geoID:id});
                     }
                     break;
                 default:
                     if(isHasCity){
                         let cityID = this.$store.getters['geo/getCityIdByGeo'](id);
-                        this.$store.dispatch('gameOperator/changeToCityMode',cityID);
+                        this.$store.dispatch('gameOperator/changeToCityMode',{cityID:cityID,geoID:id});
                     }
                     break;
             }
