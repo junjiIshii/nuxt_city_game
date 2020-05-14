@@ -13,15 +13,16 @@
     // position: absolute;
     // top: 25%;
     // left: 25%;
-    border-right: 1px blue solid;
-    border-bottom: 1px blue solid;
+    border-right: 1px dashed $black_l;
+    border-bottom: 1px dashed $black_l;
     display: flex;
     flex-wrap: wrap;
 }
 
 .c-geo_cell{
-    border-top: 1px blue solid;
-    border-left: 1px blue solid;
+    border-top: 1px dashed $black_l;
+    border-left: 1px dashed $black_l;
+    position: relative;
 
     &.u-plane{
         background-color: chartreuse;
@@ -34,6 +35,7 @@
     &.u-hascity{
         background: red;
     }
+
 
     &:hover{
         opacity: 0.8;

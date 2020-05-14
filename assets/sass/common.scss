@@ -108,6 +108,8 @@
         margin-left: 5px;
         padding: 2px 3px;
         cursor: pointer;
+        border: 1px solid $white;
+        border-radius: 2px;
     }
 
     & .c-need-item{
@@ -124,8 +126,8 @@
 }
 .p-city_mainController{
     & .c-actionBtn{
-        border: 1px solid $white;
-        border-radius: 2px;
+        // border: 1px solid $white;
+        // border-radius: 2px;
     }
     // & .c-need-item{
     //     border-right: 1px solid $white;

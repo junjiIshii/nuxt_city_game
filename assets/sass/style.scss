@@ -4,11 +4,30 @@
     box-sizing: border-box;
 }
 $black:#222222;
+$black_l:#333;
+
 $white:#fff;
 $red:rgb(184, 68, 68);
 $green:rgb(47, 153, 91);
+$aiiro:#2a2a64;
 
 @import './common.scss';
 @import './geo.scss';
 @import './city.scss';
+
+.u-has-resource::before{
+    content: '';
+    position: absolute;
+    right: 0;
+    width: 55%;height: 55%;
+    border-radius: 50%;
+    border: 2px solid yellow;
+    background-color: $black_l;
+    background-position: center;
+    background-size: cover;
+}
+
+.u-r--suger::before{
+    background-image: url('~assets/img/nr_suger.png');
+}
 
