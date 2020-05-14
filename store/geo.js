@@ -41,6 +41,14 @@ export const getters = {
     getGeoData:state=>{
         return state.geoData;
     },
+    getGeoDataByCityID:state=>cityID=>{
+        if(cityID !== undefined){
+            let geoData = state.geoData.cells.filter(data=>{
+                return data.cityID == cityID
+            })
+            return geoData[0];
+        }
+    },
     getCityIdByGeo:state=>geoID=>{
         if(geoID !== undefined){
             let geoData = state.geoData.cells.filter(data=>{
@@ -50,7 +58,7 @@ export const getters = {
         }
     },
     getGeoTerrain:state=>id=>{
-        return state.geoData[id].cells.terrain
+        return state.geoData.cells[id].terrian
     },
     getIsHasCity:state=>id=>{
         if(state.geoData.cells.length > 0){
@@ -64,10 +72,13 @@ export const getters = {
         let isAbleTerrian = state.geoData.cells[id].callIsAbleBuilCityTerrian();
         let isHasCity = getters.getIsHasCity(id);
         return (isAbleTerrian && !isHasCity);
-    }
-    ,
+    },
     getCityIDAtGeo:state=>id=>{
         return state.geoData[id].cityID;
+    },
+    getNaturalResourceObj:(state,getters)=>id=>{
+        let terrian = getters.getGeoTerrain(id);
+        return terrian.naturalResource;
     }
 };
 

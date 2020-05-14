@@ -1,4 +1,6 @@
 import {Resource,globalResource} from '~/assets/class/basicResource';
+import {buildingList} from '~/assets/class/building';
+
 
 export const state = () =>({
     turn:1,
@@ -10,7 +12,8 @@ export const state = () =>({
     selectedCityID:undefined,
     actionState:0,
     viewmode:0, //0=>geo ,1=>city
-    globalResource:undefined
+    globalResource:undefined,
+    buildingList:buildingList
 });
 
 export const mutations ={
@@ -32,8 +35,8 @@ export const mutations ={
     mordalChange(state){
         state.isMordalOpen = !state.isMordalOpen;
     },
-    setSelectedGeoID(state,payload){
-        state.selectedGeoID = payload.geoID;
+    setSelectedGeoID(state,val){
+        state.selectedGeoID = val;
     },
     setSelectedCityID(state,val){
         state.selectedCityID = val;
@@ -69,41 +72,18 @@ export const getters ={
             })
             let having = globalResource[0].num
             return (needs <=  having)?'u-ENOUHG':'u-LESS';
-        }
+    }
 };
-
 export const actions ={
-    operateBtnClick(ctx,act){
-        switch(act){
-            case 'GAMESTART':
-                ctx.commit('gameStart')
-        }
-    },
-    iniSet(ctx){
-        ctx.commit('gameStart');
-    },
-    act_selectHere(ctx,payload){
-        ctx.commit('setSelectedGeoID',{geoID:payload.geoID});
-    },
-    act_mordalChange(ctx){
-        ctx.commit('mordalChange');
-    },
-    act_CityBuild(ctx,payload){
-        ctx.commit('mordalChange');
-        ctx.commit('setSelectedGeoID',{geoID:payload.geoID});
-    },
-    act_selectCityAndOpen(ctx,payload){
-        ctx.commit('mutateViewMode',{viewMode:payload.viewMode})
-        ctx.commit('setSelectedGeoID',{geoID:payload.geoID});
-        ctx.commit('setSelectedCityID',{cityID:payload.cityID})
-    },
-    changeToCityMode({commit},val){
+    changeToCityMode({commit},payload){
         commit('mutateViewMode',1);
-        commit('setSelectedCityID',val)
+        commit('setSelectedCityID',payload.cityID)
+        commit('setSelectedGeoID',payload.geoID);
     },
     changeToGeoMode({commit}){
         commit('mutateViewMode',0);
-        commit('setSelectedCityID',undefined)
+        commit('setSelectedCityID',undefined);
+        commit('setSelectedGeoID',undefined);
     },
     goNextTurn({commit}){
         commit('proceedNextTurn');
