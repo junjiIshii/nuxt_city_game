@@ -7,6 +7,11 @@
         <div class="c-global-resource c-resource-info" v-for="gr in globalResource" :key="gr.brID">
             <span class="u-has-icon" v-bind:class="gr.iconClass"></span><div class="c-resource-info__name">{{resourceNuminfo(gr)}}</div>
         </div>
+
+        <div v-if="natural_resource !== ''" class="c-local_natural_resource c-resource-info">
+            <p class="c-nr_info">天然資源</p>
+            <div class="c-nr_icon u-has-resource" :class="natural_resource.iconClass">{{natural_resource.name}}</div>
+        </div>
     </div>
 </template>
 
@@ -55,6 +60,13 @@ export default {
                     return String('('+protivProd+')');
             }
         }
+    },
+    natural_resource(){
+        let cityID = this.$store.state.gameOperator.selectedCityID;
+        let geoID = this.$store.getters['city/getCityGeoID'](cityID);
+        let nrObj = this.$store.getters['geo/getNaturalResourceObj'](geoID);
+        let result = (nrObj !== undefined)?{iconClass:nrObj.iconClass, name:nrObj.name}:'';
+        return result;
     }
     }
 }
