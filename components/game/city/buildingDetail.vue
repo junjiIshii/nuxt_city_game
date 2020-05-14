@@ -24,7 +24,7 @@
                     1人あたりの食料消費：<span>{{oneBuilding.comsumeFood}}</span>
                 </div>
                 <div class="c-bulding-data__unit__record" v-if="isHasPropaty('prodPerWorker')">
-                    生産総量：<span v-for="(cls,index) in oneBuilding.prodItemIcon" :key="index"><i class="u-has-icon" :class="cls"></i>{{oneBuilding.prodPerWorker*oneBuilding.workerNum}}</span>
+                    生産総量：<span class="c-product_info" v-for="(cls,index) in oneBuilding.prodItemIcon" :key="index"><i class="u-has-icon" :class="cls"></i>{{oneBuilding.prodPerWorker*oneBuilding.workerNum}}</span>
                 </div>
                 <div class="c-bulding-data__unit__record" v-if="isHasPropaty('comsumeFood')">
                     総食料消費：<span>{{oneBuilding.comsumeFood*oneBuilding.workerNum}}</span>

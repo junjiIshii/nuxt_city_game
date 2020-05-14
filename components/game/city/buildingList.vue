@@ -24,7 +24,7 @@
                         />
                     </div>
                     <div class="c-bulding-data__unit__record" v-if="isHasPropaty('prodPerWorker')">
-                        生産総量：<span v-for="(cls,index) in buildInstance.prodItemIcon" :key="index"><i class="u-has-icon" :class="cls"></i>{{buildInstance.prodPerWorker*buildInstance.workerNum}}</span>
+                        生産総量：<span class="c-product_info" v-for="(cls,index) in buildInstance.prodItemIcon" :key="index"><i class="u-has-icon" :class="cls"></i>{{buildInstance.prodPerWorker*buildInstance.workerNum}}</span>
                     </div>
                     <div class="c-bulding-data__unit__record" v-if="isHasPropaty('sizeLevel')">
                         規模レベル：<span>Lv.{{buildInstance.sizeLevel}}</span>
