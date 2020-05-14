@@ -1,7 +1,5 @@
 <template>
-    <div>
-        <div class="c-geo_cell" :style="geoCellSize" :class="[terrianClassName,isHasCity]" v-on:click="returnCellID"></div>
-    </div>
+        <div class="c-geo_cell" :style="geoCellSize" :class="[terrianClassName,isHasCity,naturalResource]" v-on:click="returnCellID"></div>
 </template>
 
 <script>
@@ -25,6 +23,10 @@ export default {
         },
         isHasCity(){
             return (this.cellObj.cityID !== undefined)?'u-hascity':'';
+        },
+        naturalResource(){
+            let naturalResource = this.cellObj.terrian.naturalResource;
+            return (naturalResource !== undefined)?'u-has-resource '+naturalResource.iconClass:'';
         }
     },
     methods:{
